@@ -1,20 +1,19 @@
 {
-  "id": "figcraft-bootstrap-exporter",
+  "id": "io.github.uzielweb.bootstrap-exporter",
   "name": "Bootstrap 5 & FontAwesome Exporter",
   "version": "1.0.0",
-  "description": "Exportador inteligente de layouts e componentes do FigCraft para HTML semântico com Bootstrap 5.3+ e ícones FontAwesome 6.",
+  "description": "Exportador inteligente de layouts e componentes do FigCraft para HTML sem\u00e2ntico com Bootstrap 5.3+ e \u00edcones FontAwesome 6.",
   "author": "uzielweb",
-  "homepage": "https://github.com/uzielweb/figcraft-bootstrap-exporter",
   "main": "plugin.wasm",
-  "permissions": [
-    "read",
-    "write"
-  ],
+  "api": 4,
+  "permissions": {
+    "access": "read",
+    "saveFile": true
+  },
   "commands": [
     {
       "id": "export-bootstrap5",
-      "label": "Exportar para HTML Bootstrap 5 + FontAwesome",
-      "shortcut": "Ctrl+Shift+B"
+      "label": "Exportar para HTML Bootstrap 5 + FontAwesome"
     }
   ]
 }
