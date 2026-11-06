@@ -559,15 +559,48 @@ class UniversalASTCompiler:
 </html>
 """
 
+def choose_directory_dialog(initialdir=None):
+    """Abre o seletor nativo de pastas do sistema operacional (Windows Explorer / Finder / Linux)."""
+    try:
+        import tkinter as tk
+        from tkinter import filedialog
+        root = tk.Tk()
+        root.withdraw()
+        root.attributes('-topmost', True)
+        folder = filedialog.askdirectory(
+            title="FigCraft Exporter - Selecione a pasta onde deseja salvar o projeto Bootstrap",
+            initialdir=initialdir or os.getcwd()
+        )
+        root.destroy()
+        if folder:
+            return os.path.normpath(folder)
+    except Exception as e:
+        print(f"Aviso: Não foi possível abrir o diálogo gráfico de seleção de pasta: {e}")
+    return None
+
 def main():
     parser = argparse.ArgumentParser(description="Universal FigCraft to Bootstrap 5 & FontAwesome Exporter Engine")
     parser.add_argument('--host', default="127.0.0.1", help="FigCraft host (default 127.0.0.1)")
     parser.add_argument('--port', type=int, default=7987, help="FigCraft control port (default 7987)")
-    parser.add_argument('--dist', default="dist", help="Output distribution folder (default dist)")
+    parser.add_argument('--dist', default=None, help="Output distribution folder (default: opens system folder picker)")
+    parser.add_argument('--browse', action='store_true', help="Open system folder picker to choose destination directory")
     parser.add_argument('--frame', help="Export only a specific frame by exact name")
     parser.add_argument('--universal', action='store_true', help="Run universal AST clustering inference for all frames")
     parser.add_argument('--export-images', action='store_true', help="Export only image nodes via TinySkia")
     args = parser.parse_args()
+
+    # Seleção de pasta via navegador de arquivos do sistema operacional
+    if not args.dist or args.browse:
+        print("Abrindo navegador de arquivos do sistema para escolher a pasta de destino...")
+        chosen = choose_directory_dialog(args.dist)
+        if chosen:
+            args.dist = chosen
+            print(f"✓ Pasta selecionada: {args.dist}")
+        else:
+            args.dist = args.dist or "dist"
+            print(f"Nenhuma pasta selecionada. Usando diretório padrão: {args.dist}")
+    else:
+        args.dist = os.path.normpath(args.dist)
 
     print("=" * 75)
     print(" FigCraft -> Bootstrap 5 & FontAwesome Semantic Exporter Engine")

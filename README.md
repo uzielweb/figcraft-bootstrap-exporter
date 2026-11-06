@@ -24,30 +24,45 @@ Plugin e motor de exportação inteligente para o **[FigCraft](https://github.co
 ```text
 ├── figcraft-plugin.json   # Manifesto do plugin FigCraft
 ├── plugin.wasm            # Módulo WebAssembly compilado para o FigCraft
-├── exporter.py            # Motor CLI de exportação e ponte TCP
+├── exporter.py            # Motor de exportação e ponte TCP Control
+├── exportar.bat           # Executável de 1 clique no Windows (abre seletor de pastas)
 ├── index.html             # Exemplo exportado: App Android de Rádio (SonicPulse FM)
 └── README.md              # Documentação de uso e instalação
 ```
 
 ---
 
-## 🛠️ Como Instalar no FigCraft
+## 🛠️ Como Exportar seus Layouts
 
-1. Abra o FigCraft.
-2. Acesse o menu **Plugins ▸ Development ▸ Import plugin from manifest...**.
-3. Selecione a pasta deste repositório ou o arquivo `figcraft-plugin.json`.
-4. O comando **"Exportar para HTML Bootstrap 5 + FontAwesome 7"** estará disponível no menu **Plugins** e via atalho `Ctrl+Shift+B`.
+Você tem formas práticas de exportar qualquer tela aberta no FigCraft:
+
+### Método 1: Duplo Clique com Navegador de Pastas do Windows (Mais Fácil)
+1. Certifique-se de que o FigCraft está aberto com o seu projeto.
+2. Dê um duplo clique no arquivo **`exportar.bat`**.
+3. A janela nativa do **Explorador de Arquivos do Windows** abrirá na sua tela para você escolher onde quer salvar o site.
+4. Selecione a pasta e o motor compilará o HTML semântico e todas as imagens em segundos!
+
+### Método 2: Via Terminal / Python
+Você pode abrir o navegador gráfico ou definir a pasta diretamente:
+
+```bash
+# 1. Abre o seletor nativo de pastas do sistema para escolher interativamente:
+python exporter.py
+
+# 2. Ou força a abertura do seletor gráfico de pastas:
+python exporter.py --browse
+
+# 3. Ou define o caminho de destino diretamente pelo terminal (modo silencioso / CI):
+python exporter.py --dist "C:\MeusProjetos\NovoSite"
+```
 
 ---
 
-## 💻 Uso via Linha de Comando (CLI)
+## 🧩 Menu Interno do FigCraft
 
-Você também pode utilizar o motor de exportação standalone via Python:
-
-```bash
-# Exportar a tela atual do FigCraft aberto (porta 7987)
-python exporter.py --host 127.0.0.1 --port 7987 --output meu-layout.html
-```
+1. No FigCraft, clique no logo (canto superior esquerdo) ▸ **Plugins ▸ Development ▸ Import plugin from manifest...**.
+2. Selecione o arquivo `figcraft-plugin.json`.
+3. O comando **"Exportar para Bootstrap 5 & FontAwesome…"** abrirá o formulário modal na tela.
 
 ---
 
