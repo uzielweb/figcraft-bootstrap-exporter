@@ -1,0 +1,9 @@
+[package]
+name = "figcraft-plugin-sdk"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+description = "Write FigCraft plugins in Rust: the plugin ABI (host functions, the entry point) wrapped with serde_json"
+
+[dependencies]
+serde_json = { version = "1.0", default-features = false, features = ["alloc"] }

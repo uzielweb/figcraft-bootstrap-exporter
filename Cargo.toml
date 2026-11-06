@@ -1,0 +1,21 @@
+[package]
+name = "figcraft-bootstrap-exporter"
+version = "1.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+name = "plugin"
+
+[dependencies]
+figcraft-plugin-sdk = { path = "sdk" }
+serde_json = { version = "1.0", default-features = false, features = ["alloc"] }
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

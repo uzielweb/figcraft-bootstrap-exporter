@@ -4,3 +4,6 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+target/
+dist/
+dist_test/

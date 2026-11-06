@@ -1,65 +1,24 @@
 {
-  "id": "io.github.uzielweb.bootstrap-exporter",
-  "name": "Bootstrap 5 & FontAwesome Exporter",
-  "version": "1.0.0",
-  "description": "Exportador inteligente de layouts e componentes do FigCraft para HTML semântico com Bootstrap 5.3+ e ícones FontAwesome 6.",
-  "author": "uzielweb",
-  "main": "plugin.wasm",
-  "api": 4,
-  "permissions": {
-    "access": "read",
-    "saveFile": true
-  },
-  "commands": [
-    {
-      "id": "export-bootstrap5",
-      "label": "Exportar para Bootstrap 5 & FontAwesome…",
-      "params": [
+    "api": 4,
+    "id": "io.github.uzielweb.bootstrap-exporter",
+    "version": "2.1.0",
+    "name": "Bootstrap 5 & FontAwesome Exporter",
+    "description": "Exportador oficial de alta fidelidade nativo em Rust/WASM para HTML5 semantico com Bootstrap 5.3+, classes CSS de cada elemento e icones FontAwesome.",
+    "author": "uzielweb",
+    "main": "plugin.wasm",
+    "permissions": {
+        "access": "read",
+        "commands": [
+            "node.find",
+            "node.get",
+            "file.export"
+        ],
+        "saveFile": true
+    },
+    "commands": [
         {
-          "name": "mode",
-          "label": "Modo de Exportação",
-          "type": "select",
-          "options": [
-            "Frames Desktop (1920px)",
-            "Apenas Seleção Atual",
-            "Todos os Frames da Página"
-          ],
-          "value": "Frames Desktop (1920px)"
-        },
-        {
-          "name": "dist",
-          "label": "Diretório de Destino",
-          "type": "text",
-          "value": "dist"
-        },
-        {
-          "name": "theme",
-          "label": "Tema Bootstrap",
-          "type": "select",
-          "options": [
-            "Auto (Conforme Layout)",
-            "Dark Mode (data-bs-theme='dark')",
-            "Light Mode"
-          ],
-          "value": "Auto (Conforme Layout)"
-        },
-        {
-          "name": "icons",
-          "label": "Biblioteca de Ícones",
-          "type": "select",
-          "options": [
-            "FontAwesome 6 (CDN Free)",
-            "Bootstrap Icons (CDN)"
-          ],
-          "value": "FontAwesome 6 (CDN Free)"
-        },
-        {
-          "name": "command",
-          "label": "Comando Standalone no Terminal",
-          "type": "text",
-          "value": "python exporter.py --dist dist"
+            "id": "export-bootstrap5",
+            "label": "Exportar para Bootstrap 5 & FontAwesome..."
         }
-      ]
-    }
-  ]
+    ]
 }
