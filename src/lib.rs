@@ -309,7 +309,6 @@ fn cluster_columns_bootstrap(elements: &[FusedElement], frame_w: f64) -> Vec<(us
         let mut cur = vec![col_items[0].clone()];
 
         for e in col_items.into_iter().skip(1) {
-            let last = cur.last().unwrap();
             let c_right = cur.iter().map(|item| item.x + item.width).fold(0.0, f64::max);
             if e.x < (c_right + 30.0) {
                 cur.push(e);
@@ -326,7 +325,9 @@ fn cluster_columns_bootstrap(elements: &[FusedElement], frame_w: f64) -> Vec<(us
     let mut result = Vec::new();
     let count = clusters.len();
 
-    if count == 1 {
+    if count == 0 {
+        // Sem colunas agrupadas (apenas elementos full_width)
+    } else if count == 1 {
         let mut c = clusters.remove(0);
         c.sort_by(|a, b| a.y.partial_cmp(&b.y).unwrap_or(std::cmp::Ordering::Equal));
         result.push((12, c));
@@ -358,7 +359,7 @@ fn cluster_columns_bootstrap(elements: &[FusedElement], frame_w: f64) -> Vec<(us
             c.sort_by(|a, b| a.y.partial_cmp(&b.y).unwrap_or(std::cmp::Ordering::Equal));
             result.push((spans[idx], c));
         }
-    } else {
+    } else if count > 0 {
         let span = usize::max(2, 12 / count);
         for mut c in clusters {
             c.sort_by(|a, b| a.y.partial_cmp(&b.y).unwrap_or(std::cmp::Ordering::Equal));
@@ -841,16 +842,24 @@ fn compile_frame_to_bootstrap(frame: &Value, css_rules: &mut Vec<CssRule>) -> St
 
 /// Execução oficial do plugin ao clicar no menu do FigCraft
 fn run(input: Input) -> Result<Value> {
-    // 1. Identifica frames: usa a seleção atual ou busca todos os frames da página
-    let frame_ids: Vec<u64> = if !input.selection.is_empty() {
-        input.selection.clone()
-    } else {
-        let find_res = call("node.find", &json!({"type": "FRAME"}))?;
-        find_res.get("ids")
-            .and_then(Value::as_array)
-            .map(|a| a.iter().filter_map(Value::as_u64).collect())
-            .unwrap_or_default()
-    };
+    // 1. Identifica frames: valida a seleção atual ou busca os frames da página
+    let mut frame_ids: Vec<u64> = Vec::new();
+    for &id in &input.selection {
+        if let Ok(node) = call("node.get", &json!({"id": id})) {
+            let ntype = node.get("type").and_then(Value::as_str).unwrap_or("");
+            if ntype.eq_ignore_ascii_case("FRAME") {
+                frame_ids.push(id);
+            }
+        }
+    }
+
+    if frame_ids.is_empty() {
+        if let Ok(find_res) = call("node.find", &json!({"type": "FRAME"})) {
+            if let Some(arr) = find_res.get("ids").and_then(Value::as_array) {
+                frame_ids = arr.iter().filter_map(Value::as_u64).collect();
+            }
+        }
+    }
 
     if frame_ids.is_empty() {
         return Err("Nenhum frame selecionado ou encontrado na página para exportação.".into());
