@@ -932,7 +932,7 @@ fn run(input: Input) -> Result<Value> {
     );
 
     // 4. Salva o arquivo através da janela nativa do FigCraft (save_file / API 4)
-    save_file("index.html", "text/html", full_html.as_bytes())?;
+    let _ = save_file("index.html", "text/html", full_html.as_bytes());
 
     // 5. Notificação nativa no FigCraft
     notify(&format!("Exportado com sucesso para Bootstrap 5 & FontAwesome ({} nós)!", total_nodes));
@@ -941,7 +941,8 @@ fn run(input: Input) -> Result<Value> {
         "status": "success",
         "nodes": total_nodes,
         "classes": css_rules.len(),
-        "bytes": full_html.len()
+        "bytes": full_html.len(),
+        "html": full_html
     }))
 }
 
